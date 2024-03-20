@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Нажмите кнопку</title>
+<style>
+body {
+  background-image: linear-gradient(to right, #2b5876, #4e4376);
+  color: white;
+}
+
+.button-container {
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<h1>нажимай на кнопку!</h1>
+
+<div class="button-container">
+  <button onclick="addCoin()">Нажмите на меня</button>
+  <button onclick="upgradeFor100()">Прокачать за 100</button>
+  <p id="coin-count">У вас 0 монет.</p>
+</div>
+
+<script>
+let coins = 0;
+const coinCount = document.getElementById('coin-count');
+let upgradePrice = 100;
+let upgradeTimer;
+
+function addCoin() {
+  coins++;
+  coinCount.textContent = 'У вас ' + coins + ' монет.';
+}
+
+function upgradeFor100() {
+  if (coins >= upgradePrice) {
+    coins -= upgradePrice;
+    coinCount.textContent = 'У вас ' + coins + ' монет.';
+
+    upgradeTimer = setInterval(function() {
+      addCoin();
+    }, 1000);
+  } else {
+    alert('Недостаточно монет для прокачки');
+  }
+}
+
+// WebSocket connection
+const socket = new WebSocket('ws://example.com/socket');
+
+socket.onopen = function(event) {
+  console.log('WebSocket connection established');
+};
+
+socket.onmessage = function(event) {
+  // Handle incoming messages from the WebSocket server
+  console.log('Received message from server:', event.data);
+};
+
+socket.onerror = function(error) {
+  console.error('WebSocket error:', error);
+};
+
+socket.onclose = function(event) {
+  console.log('WebSocket connection closed');
+};
+function bonus() {
+    setInterval(function() {
+      coins += 200;
+      coinCount.textContent = 'У вас ' + coins + ' монет.';
+    }, 300000); // 5 minutes in milliseconds
+  }
+  bonus();
+  
+</script>
+
+</body>
+</html>
